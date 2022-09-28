@@ -3,6 +3,9 @@ Template heudiconv file from
 https://neuroimaging-core-docs.readthedocs.io/en/latest/pages/heudiconv.html
 '''
 
+def hi():
+    print('hi')
+
 def infotodict(seqinfo):
     """Heuristic evaluator for determining which runs belong where
 
@@ -14,7 +17,15 @@ def infotodict(seqinfo):
     subindex: sub index within group
     """
 
-    from cfmm_filters import mp2rage_7T
-    info = mp2rage_7T(seqinfo).get_info()
+    # Add to module search path
+    import sys
+    sys.path.append('/heuristics')
+
+    from cfmm_filters.seven_tesla.mp2rage import mp2rage
+
+    # Track mp2rage
+    info = mp2rage(seqinfo).get_info()
+
+    # info1.update(info2)
 
     return info
