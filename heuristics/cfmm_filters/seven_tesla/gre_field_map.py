@@ -18,7 +18,7 @@ class gre_field_map:
 
         # Initialize info: key=create_key() and value=[] for all images
         info = {}
-        images = [magnitude,difference]
+        images = [magnitude,phase_difference]
         for image in images:
             info[image] = []
 
@@ -27,10 +27,10 @@ class gre_field_map:
 
             if 'gre_field_mapping' in s.series_description:
 
-                if '\'M\'' in s.image_type:
+                if 'M' in s.image_type:
                     info[magnitude].append({'item': s.series_id})
 
-                if '\'P\'' in s.image_type:
+                if 'P' in s.image_type:
                     info[phase_difference].append({'item': s.series_id})
         
         return info

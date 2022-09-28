@@ -19,6 +19,7 @@ def infotodict(seqinfo):
     sys.path.append('/heuristics')
 
     from cfmm_filters.seven_tesla.mp2rage import mp2rage
+    from cfmm_filters.seven_tesla.gre_field_map import gre_field_map
 
     # Instantiate all cfmm_filters
     infos = [
