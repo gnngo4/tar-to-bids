@@ -20,11 +20,13 @@ def infotodict(seqinfo):
 
     from cfmm_filters.seven_tesla.mp2rage import mp2rage
     from cfmm_filters.seven_tesla.gre_field_map import gre_field_map
+    from cfmm_filters.seven_tesla.osc_fmri_v1 import bold
 
     # Instantiate all cfmm_filters
     infos = [
         mp2rage(seqinfo).get_info(),
         gre_field_map(seqinfo).get_info(),
+        bold(seqinfo).get_info(),
     ]
 
     # Load all filters into `info`
