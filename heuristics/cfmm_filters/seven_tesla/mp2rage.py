@@ -29,7 +29,7 @@ class mp2rage:
 
             if 'mp2rage' in s.series_description:
 
-                if 'UNI_Images' in s.series_description.split('_'):
+                if 'UNI_Images' in s.series_description:
                     info[uni].append({'item': s.series_id})
 
                 if 'T1_Images' in s.series_description:
@@ -40,5 +40,5 @@ class mp2rage:
                 
                 if 'INV2' in s.series_description:
                     info[inv2].append({'item': s.series_id})
-        
+
         return info
