@@ -14,13 +14,9 @@ def infotodict(seqinfo):
     subindex: sub index within group
     """
 
-    # Add to module search path
-    import sys
-    sys.path.append('/heuristics')
-
-    from cfmm_filters.seven_tesla.mp2rage import mp2rage
-    from cfmm_filters.seven_tesla.gre_field_map import gre_field_map
-    from cfmm_filters.seven_tesla.osc_fmri_v1 import bold
+    from src.heuristics.cfmm_filters.seven_tesla.mp2rage import mp2rage
+    from src.heuristics.cfmm_filters.seven_tesla.gre_field_map import gre_field_map
+    from src.heuristics.cfmm_filters.seven_tesla.schmitz_osc_v1 import bold
 
     # Instantiate all cfmm_filters
     infos = [

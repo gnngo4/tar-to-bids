@@ -2,7 +2,7 @@
 7T MP2RAGE sequence - provides mappings for UNI, T1map, INV1, and INV2 images
 """
 
-from cfmm_filters.utils import create_key
+from src.heuristics.cfmm_filters.utils import create_key
 
 class mp2rage:
 
