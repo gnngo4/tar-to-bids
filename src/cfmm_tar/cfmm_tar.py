@@ -1,13 +1,11 @@
-import os, tarfile, shutil
+import os, tarfile, shutil, tempfile
 
 class cfmm_tar:
 
-    def __init__(self, tar_file, tar_dir):
+    def __init__(self, tar_file):
 
         self.tar_file = tar_file
-        self.tar_dir = tar_dir
-        
-        assert not os.path.isdir(self.tar_dir), f"{self.tar_dir} already exists."
+        self.tar_dir = tempfile.mkdtemp()
 
     def extract(self):
 
@@ -33,7 +31,7 @@ class cfmm_tar:
     
     def _get_dicom_tree(self):
 
-        splits = self.tar_file.split('_')
+        splits = self.tar_file.split('/')[-1].split('_')
         self.session_info = '_'.join(splits[3:-1])
         self.tar_tree = '/'.join(
             [

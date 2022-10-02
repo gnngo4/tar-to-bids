@@ -1,7 +1,9 @@
 """Run tar-to-bids"""
-import argparse
+import argparse, os
 
 from src.heuristics.utils import HEURISTIC_DIR
+
+from src.cfmm_tar.cfmm_tar import cfmm_tar
 
 def _setup_parser():
     """
@@ -37,7 +39,27 @@ def _setup_parser():
         help=f'Input the heuristics used to map the DICOM files, relative to {HEURISTIC_DIR}'
     )
 
+    parser.add_argument(
+        '--output_dir',
+        default='./bids',
+        type=str,
+        help=f'Input the output directory (default: ./bids)'
+    )
+
     return parser
+
+def call_heudiconv(
+        tar_dir,
+        out_dir,
+        heuristic_py,
+        subject,
+        session
+    ):
+
+    import subprocess
+    cmd = f"heudiconv -d {tar_dir}/*/*/*/{{subject}}_{{session}}/*/*/*.dcm -o {out_dir} -f {heuristic_py} -s {subject} -ss {session} -c dcm2niix -b --minmeta --overwrite"
+    output = f"{out_dir}/log.txt"
+    subprocess.run(cmd,shell=True)
 
 def main():
     """
@@ -53,7 +75,22 @@ def main():
     parser = _setup_parser()
     args=parser.parse_args()
 
-    print(args)
+
+
+    reformat = f"{args.subject}_{args.session}"
+
+    # Extract tar file
+    tar_obj = cfmm_tar(args.tar)
+    tar_obj.extract()
+    tar_obj.reformat_dicom_tree(reformat)
+
+    # heudiconv
+    heuristic = os.path.join('/opt/tar-to-bids/src/heuristics',args.heuristic)
+    assert os.path.exists(heuristic), f"{heuristic} does not exist."
+    call_heudiconv(tar_obj.tar_dir,args.output_dir,heuristic,args.subject,args.session)
+
+    # cleanup
+    tar_obj.cleanup()
 
 if __name__ == "__main__":
     main()
