@@ -75,8 +75,6 @@ def main():
     parser = _setup_parser()
     args=parser.parse_args()
 
-
-
     reformat = f"{args.subject}_{args.session}"
 
     # Extract tar file
@@ -89,9 +87,15 @@ def main():
     assert os.path.exists(heuristic), f"{heuristic} does not exist."
     call_heudiconv(tar_obj.tar_dir,args.output_dir,heuristic,args.subject,args.session)
 
+    """
+    heudiconv does not read physio dicoms, so editing heuristics does not retrieve them.
+    The current solution parses tar outputs manually to identify MRI-physio pairs.
+    """
+    physio_pairs = tar_obj.get_physio_pairs()
+    tar_obj.pair_physio_to_mri(physio_pairs,args.subject,args.session,args.output_dir,'func')
+
     # cleanup
     tar_obj.cleanup()
 
 if __name__ == "__main__":
     main()
-
