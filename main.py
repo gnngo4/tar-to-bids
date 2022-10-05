@@ -92,7 +92,7 @@ def main():
     The current solution parses tar outputs manually to identify MRI-physio pairs.
     """
     physio_pairs = tar_obj.get_physio_pairs()
-    tar_obj.pair_physio_to_mri(physio_pairs,args.subject,args.session,args.output_dir,'func')
+    tar_obj.pair_physio_to_mri(physio_pairs,args.subject,args.session,args.output_dir)
 
     # cleanup
     tar_obj.cleanup()

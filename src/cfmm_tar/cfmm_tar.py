@@ -34,6 +34,9 @@ class cfmm_tar:
         """
         Naive method to pair physio dcm with corresponding MRI data
         Sequentially matches '_PhysioLog' to MRI data
+
+        Returns a dictionary mapping Physio_log series number to its
+        associated MRI series number
         """
 
         from pydicom import dcmread
@@ -42,16 +45,21 @@ class cfmm_tar:
         series_ids = os.listdir(self.tar_tree)
         series_ids.sort() # reorder in ascending order
 
-        # Loop through all SERIES to find SERIES names with a PhysioLog)
+        # Loop through all SERIES to find SERIES names with a PhysioLog
         track_scans = []
         for series_id in series_ids:
             fp_base = f"{self.tar_tree}/{series_id}"
             single_dcm = f"{fp_base}/{os.listdir(fp_base)[0]}"
             series_description = dcmread(single_dcm).SeriesDescription
-            if '_PhysioLog' in series_description:
-                track_scans.append(series_description.replace('_PhysioLog',''))
+            '''
+            Associated MRI series_description names can be retrieved 
+            from the Physio series description by removing the suffix:
+            '_PhysioLog'
+            '''
+            if '_PhysioLog' in series_description: track_scans.append(series_description.replace('_PhysioLog',''))
 
-        physio_idx, physio_pairs = 0, []
+        
+        physio_idx, physio_pairs = 0, {}
         physio_pair = {'PHYSIO': None,'MRI': None}
         for series_id in series_ids:
             
@@ -61,34 +69,33 @@ class cfmm_tar:
             series_description = metadata.SeriesDescription
             series_number = metadata.SeriesNumber
 
-            if '_PhysioLog' in series_description:
-                physio_pair['PHYSIO'] = series_number
-            if track_scans[physio_idx] == series_description:
-                physio_pair['MRI'] = series_number
+            if '_PhysioLog' in series_description: physio_pair['PHYSIO'] = str(series_number).zfill(4)
+            if track_scans[physio_idx] == series_description: physio_pair['MRI'] = str(series_number).zfill(4)
 
             if physio_pair['PHYSIO'] is not None and physio_pair['MRI'] is not None:
-                physio_pairs.append(physio_pair) # Add physio match
+                physio_pairs[physio_pair['PHYSIO']] = physio_pair['MRI'] # Add physio match
                 physio_pair = {'PHYSIO': None,'MRI': None} # Reinitialize `physio_pair` after a match is established
                 physio_idx += 1 # Increment `physio_idx`
                 # End loop after all `physio_pairs` have been matched
-                if len(track_scans) == len(physio_pairs): break
+                if physio_idx == len(track_scans): break
 
         return physio_pairs
 
-    def pair_physio_to_mri(self,physio_pairs,subject_id,session_id,bids_dir,bids_sub_dir='func'):
+    def pair_physio_to_mri(self,physio_pairs,subject_id,session_id,bids_dir):
+        '''
+        Loop through `physio_pairs` and copy physio dicoms to a physio_dir (`physio_dir`)
+        '''
+        
+        physio_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/physio"
+        if not os.path.isdir(physio_dir): os.mkdir(physio_dir)
 
-        mri_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/{bids_sub_dir}"
-        series_ids = list(set([i.split('task-')[1].split('_')[0] for i in os.listdir(mri_dir)]))
+        for physio_id, mri_id in physio_pairs.items():
 
-        for mri_id in series_ids:
-            # Find physio series_id corresponding to the mri_id
-            for pair in physio_pairs:
-                if str(pair['MRI']).zfill(4) == mri_id:
-                    physio_id = str(pair['PHYSIO']).zfill(4)
-                    break
-            fp_base = f"{self.tar_tree}/{physio_id}"
-            physio_dcm = f"{fp_base}/{os.listdir(fp_base)[0]}"
-            os.system(f'cp {physio_dcm} {mri_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm')
+            dcm_physio_dir = f"{self.tar_tree}/{physio_id}"
+            assert len(os.listdir(dcm_physio_dir)) == 1, "Physio dicom folder should contain only 1 file."
+            physio_dcm = f"{dcm_physio_dir}/{os.listdir(dcm_physio_dir)[0]}"
+            copy_physio_cmd = f"cp {physio_dcm} {physio_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
+            os.system(copy_physio_cmd)
     
     def _get_dicom_tree(self):
 
