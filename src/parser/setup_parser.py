@@ -2,7 +2,7 @@ import argparse
 
 from src.heuristics.utils import HEURISTIC_DIR
 
-from src.parser.action import CheckTarMappings
+from src.parser.action import CheckTarMappings, CheckAvailableHeuristics
 
 def setup_parser():
     """
@@ -50,6 +50,13 @@ def setup_parser():
         '--task_mappings',
         type=str,
         help=f''
+    )
+
+    parser.add_argument(
+        '--check_available_heuristics',
+        nargs=0,
+        help='Set option to see all available heuristics',
+        action=CheckAvailableHeuristics
     )
 
     parser.add_argument(
