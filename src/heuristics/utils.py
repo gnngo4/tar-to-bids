@@ -1,1 +1,3 @@
-HEURISTIC_DIR = '/src/heuristics'
+HEURISTIC_DIR = '/opt/tar-to-bids/src/heuristics'
+
+

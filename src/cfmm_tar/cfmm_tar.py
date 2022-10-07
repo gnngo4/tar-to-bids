@@ -96,7 +96,10 @@ class cfmm_tar:
             physio_dcm = f"{dcm_physio_dir}/{os.listdir(dcm_physio_dir)[0]}"
             copy_physio_cmd = f"cp {physio_dcm} {physio_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
             os.system(copy_physio_cmd)
-    
+
+    """
+    """   
+
     def _get_dicom_tree(self):
 
         splits = self.tar_file.split('/')[-1].split('_')
