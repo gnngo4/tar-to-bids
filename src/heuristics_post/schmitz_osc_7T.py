@@ -39,7 +39,7 @@ def remap_func(func_runs, task_mappings):
     event_runs = {}
     print('\nRemapping:')
     for series_id, f in func_runs.items():
-        print(series_id)
+        print(f'Series ID: {series_id}')
         task_event = task_mappings.get(series_id)
         if event_runs.get(task_event) is None: 
             event_runs[task_event] = 1
@@ -47,7 +47,8 @@ def remap_func(func_runs, task_mappings):
             event_runs[task_event] += 1
         for _f in f.values():
             if _f is not None:
-                relabel_f = _f.replace(f'task-{series_id}',f'task-{task_event}').replace('run-01',f'run-{str(event_runs[task_event]).zfill(2)}')
+                _series_id = _f.split('task-')[1][:4]
+                relabel_f = _f.replace(f'task-{_series_id}',f'task-{task_event}').replace('run-01',f'run-{str(event_runs[task_event]).zfill(2)}')
                 print(f'{_f} -> {relabel_f}')
                 os.rename(_f,relabel_f)
     print('\n')
