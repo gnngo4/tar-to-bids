@@ -48,8 +48,9 @@ def setup_parser():
 
     parser.add_argument(
         '--task_mappings',
+        default=None,
         type=str,
-        help=f''
+        help=f'Input task_tsv mappings (relative path)'
     )
 
     parser.add_argument(

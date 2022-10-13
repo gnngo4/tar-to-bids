@@ -10,7 +10,7 @@ class CheckTarMappings(argparse.Action):
         '''
         Retrieve tar mappings if `args.check_tar_mappings` is used.
         '''
-        if '/' in values: values = values[-1]
+        if '/' in values: values = values.split('/')[-1]
         tar_mapper().check_csv(values)
         parser.exit() # Exit the program with no more arg parsing and checking
 

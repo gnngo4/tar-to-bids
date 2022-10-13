@@ -1,10 +1,10 @@
 """Run tar-to-bids"""
-import argparse, os
+import argparse, os, sys
 
 from src.heuristics.utils import HEURISTIC_DIR
-
 from src.cfmm_tar.cfmm_tar import cfmm_tar
 from src.parser.setup_parser import setup_parser
+from src.csv_reader.tar_mapper import task_mapper
 
 def call_heudiconv(
         tar_dir,
@@ -28,13 +28,27 @@ def main():
     pass
     ```
     """
-    
+
     # Get argparse arguments
     parser = setup_parser()
     args=parser.parse_args()
 
     # Make bids directory, if it does not exist
     if not os.path.isdir(args.output_dir): os.mkdir(args.output_dir)
+
+    # Check if session is already run
+    subject_session_dir = f"{args.output_dir}/sub-{args.subject}/ses-{args.session}"
+    assert not os.path.isdir(subject_session_dir), f"Remove (1) {subject_session_dir} to re-run, and (2) {args.output_dir}/.heudiconv/{args.subject}/ses-{args.session}."
+
+    # Check for post-processing module associated to the specified heuristic.
+    if args.task_mappings is not None:
+        post_process_module = f"src.heuristics_post.{args.heuristic.replace('.py','')}"
+        try:
+            from importlib import import_module
+            post_process = import_module(f"{post_process_module}")
+        except:
+            print(f"{post_process_module} does not exist.\nExiting.\n")
+            sys.exit(0)
 
     # Extract tar file
     tar_obj = cfmm_tar(args.tar)
@@ -53,14 +67,10 @@ def main():
     assert os.path.exists(heuristic), f"{heuristic} does not exist."
     call_heudiconv(tar_obj.tar_dir,args.output_dir,heuristic,args.subject,args.session)
 
-    # Save physio dcms
-    """
-    heudiconv does not read physio dicoms (they are not stored in .dicomtsv files).
-    This means that editing heuristics will not retrieve them. The current solution
-    parses tar outputs manually to identify MRI-physio pairs.
-    """
-    physio_pairs = tar_obj.get_physio_pairs()
-    tar_obj.pair_physio_to_mri(physio_pairs,args.subject,args.session,args.output_dir)
+    # heudiconv post-processing
+    if args.task_mappings is not None:
+
+        post_process.heudiconv_post_process(tar_obj.tar_tree,args.subject,args.session,args.output_dir,args.heuristic,args.task_mappings)
 
     # cleanup
     tar_obj.cleanup()

@@ -1,10 +1,31 @@
 import os
 import pandas as pd
 
+class task_mapper:
+
+    def __init__(self,heuristic,rel_task_csv):
+        
+        self.TASK_COLUMNS = ['series_id','task_event']
+        self.MAPPING_DIR = '/mappings'
+        if '/' in rel_task_csv:
+            rel_task_csv = rel_task_csv.split('/')[-1]
+        self.task_csv = f"{self.MAPPING_DIR}/{heuristic}/series_task_mappings/{rel_task_csv}"
+        assert os.path.exists(self.task_csv), f"{self.task_csv} does not exist."
+
+    def get_series_to_task_mappings(self):
+
+        df = pd.read_csv(self.task_csv)
+        assert [i for i in df.columns[:2]] == self.TASK_COLUMNS, f"csv columns should include: {self.TASK_COLUMNS}"
+        series_id = [str(i).zfill(4) for i in df['series_id'].to_list()]
+        task_event = df['task_event'].to_list()
+        
+        return dict(zip(series_id,task_event))
+
 class tar_mapper:
 
     def __init__(self):
         
+
         self.MAPPING_DIR = '/mappings'
         self.TAR_COLUMNS = ['tar', 'study_id', 'subject_id', 'session_id', 'task_csv', 'notes']
         self.MANDATORY_TAR_COLUMNS = self.TAR_COLUMNS[:-1]
@@ -41,7 +62,6 @@ class tar_mapper:
         assert os.path.exists(tar_mappings_csv), f"{tar_mappings_csv} does not exist."
         
         return tar_mappings_csv
-        
         
     def _check_tar_file(self, df, tar_file):
 
