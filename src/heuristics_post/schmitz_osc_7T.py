@@ -135,7 +135,7 @@ def _aggregate_physio(physio_ls,func_runs):
         suffix = 'PHYSIOLOG.dcm'
         if suffix == f[-len(suffix):]:
             if func_runs.get(series_id) is None: continue
-            func_runs[series_id]['physio'] = f
+            func_runs[series_id]['physio'] = f.replace('/physio/','/func/')
             physio_ls.remove(f)
 
     return physio_ls, func_runs
