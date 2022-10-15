@@ -1,5 +1,5 @@
 """
-7T GRE field map sequence - provides mappings for two magnitude and phasediff images
+3T GRE field map sequence - provides mappings for two magnitude and phasediff images
 """
 
 from src.heuristics.cfmm_filters.utils import create_key
