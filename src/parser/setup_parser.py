@@ -54,6 +54,12 @@ def setup_parser():
     )
 
     parser.add_argument(
+        '--post_process',
+        action='store_true',
+        help='Enable post-heudiconv processing.'
+    )
+
+    parser.add_argument(
         '--check_available_heuristics',
         nargs=0,
         help='Set option to see all available heuristics',

@@ -41,7 +41,8 @@ def main():
     assert not os.path.isdir(subject_session_dir), f"Remove (1) {subject_session_dir} to re-run, and (2) {args.output_dir}/.heudiconv/{args.subject}/ses-{args.session}."
 
     # Check for post-processing module associated to the specified heuristic.
-    if args.task_mappings is not None:
+    run_post_processing = args.task_mappings is not None or args.post_process
+    if run_post_processing:
         post_process_module = f"src.heuristics_post.{args.heuristic.replace('.py','')}"
         try:
             from importlib import import_module
@@ -68,9 +69,9 @@ def main():
     call_heudiconv(tar_obj.tar_dir,args.output_dir,heuristic,args.subject,args.session)
 
     # heudiconv post-processing
-    if args.task_mappings is not None:
-
-        post_process.heudiconv_post_process(tar_obj.tar_tree,args.subject,args.session,args.output_dir,args.heuristic,args.task_mappings)
+    if run_post_processing:
+        if args.task_mappings is None: post_process.heudiconv_post_process(tar_obj.tar_tree,args.subject,args.session,args.output_dir,args.heuristic,args.task_mappings)
+        else: post_process.heudiconv_post_process(tar_obj.tar_tree,args.subject,args.session,args.output_dir,args.heuristic,"")
 
     # cleanup
     tar_obj.cleanup()
