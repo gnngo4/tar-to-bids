@@ -39,11 +39,11 @@ class bold:
                 reverse_phase = True if (collections.Counter(phase_dirs).most_common(1)[0][0] != phase_dir) and (s.dim4 == 1) else False
 
                 if whole_brain:
-                    template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}p{in_phase_accel}_dir-{phase_dir}_part-{part}_run-{{item:02d}}_{suffix}')
+                    template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}p{in_phase_accel}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                 elif reverse_phase:
-                    template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-reversephase_acq-mb{mb_factor}p{in_phase_accel}_dir-{phase_dir}_part-{part}_run-{{item:02d}}_{suffix}')
+                    template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-reversephase_acq-mb{mb_factor}p{in_phase_accel}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                 else:
-                    template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{dicom_dir_number}_acq-mb{mb_factor}p{in_phase_accel}_dir-{phase_dir}_part-{part}_run-{{item:02d}}_{suffix}')
+                    template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{dicom_dir_number}_acq-mb{mb_factor}p{in_phase_accel}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
 
                 try:
                     info[template].append({'item': s.series_id})
