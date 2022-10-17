@@ -45,10 +45,16 @@ def remap_func(func_runs, task_mappings):
             event_runs[task_event] = 1
         else:
             event_runs[task_event] += 1
-        for _f in f.values():
+        for _type, _f in f.items():
             if _f is not None:
                 _series_id = _f.split('task-')[1][:4]
                 relabel_f = _f.replace(f'task-{_series_id}',f'task-{task_event}').replace('run-01',f'run-{str(event_runs[task_event]).zfill(2)}')
+                # quick-fix for relabeling of physio[.dcm]
+                if _type == 'physio': 
+                    physio_idx = relabel_f.index('physio-')
+                    physio_id = relabel_f[physio_idx:physio_idx+12]
+                    suffix = f['mag_bold'].split('_acq')[1].replace('nii.gz','dcm').replace('run-01',f'run-{str(event_runs[task_event]).zfill(2)}')
+                    relabel_f = relabel_f.replace('/physio/','/func/').replace(physio_id,'').replace('PHYSIOLOG.dcm',f'acq{suffix}')
                 print(f'{_f} -> {relabel_f}')
                 os.rename(_f,relabel_f)
     print('\n')
@@ -135,7 +141,7 @@ def _aggregate_physio(physio_ls,func_runs):
         suffix = 'PHYSIOLOG.dcm'
         if suffix == f[-len(suffix):]:
             if func_runs.get(series_id) is None: continue
-            func_runs[series_id]['physio'] = f.replace('/physio/','/func/')
+            func_runs[series_id]['physio'] = f
             physio_ls.remove(f)
 
     return physio_ls, func_runs

@@ -70,7 +70,7 @@ def main():
 
     # heudiconv post-processing
     if run_post_processing:
-        if args.task_mappings is None: post_process.heudiconv_post_process(tar_obj.tar_tree,args.subject,args.session,args.output_dir,args.heuristic,args.task_mappings)
+        if args.task_mappings is not None: post_process.heudiconv_post_process(tar_obj.tar_tree,args.subject,args.session,args.output_dir,args.heuristic,args.task_mappings)
         else: post_process.heudiconv_post_process(tar_obj.tar_tree,args.subject,args.session,args.output_dir,args.heuristic,"")
 
     # cleanup
