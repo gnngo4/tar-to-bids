@@ -49,32 +49,32 @@ class bold:
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 # Map task events
                 elif '_c09_' in description:
-                    task_event = 'entrain-tr'
+                    task_event = 'entrain-q2'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 elif '_c12_' in description:
-                    task_event = 'entrain-tl'
+                    task_event = 'entrain-q1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 elif '_c17_' in description:
-                    task_event = 'control-tr'
+                    task_event = 'control-q2'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 elif '_c20_' in description:
-                    task_event = 'control-tl'
+                    task_event = 'control-q1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 elif '_c13_' in description:
-                    task_event = 'localizer-tr'
+                    task_event = 'localizer-q2'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 elif '_c16_' in description:
-                    task_event = 'localizer-tl'
+                    task_event = 'localizer-q1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
