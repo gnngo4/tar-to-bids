@@ -37,3 +37,20 @@ Optionally perform additional bids post-processing:
 docker run --rm -it -v <mapping-directory>:/mappings -v <tar-directory>:/tar -v <bids-directory>:/bids tar-to-bids --tar /tar/<tar-file> --subject <subject-id> --session <session-id> --heuristic <heuristic> --output_dir /bids --task-mappings <task-mapping>
 ```
  - an additional `--post-process` flag can be used if the additional post-processing scripts does not require a task-mapping csv file.
+
+## Building a singularity image from a local docker image
+https://github.com/apptainer/singularity/issues/1537
+
+```bash
+# Start a docker registry
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+# Build docker image
+docker build -t tar-to-bids .
+# Push local docker container to the registry
+docker tag tar-to-bids localhost:5000/tar-to-bids
+docker push localhost:5000/tar-to-bids
+# Create a singularity image
+SINGULARITY_NOHTTPS=1 singularity build tar-to-bids.simg docker://localhost:5000/tar-to-bids:latest
+```
+
+
