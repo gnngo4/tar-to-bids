@@ -38,15 +38,16 @@ class bold:
 
                 whole_brain = True if 'wholebrain' in s.series_description.lower() else False
 
-                reverse_phase = True if (collections.Counter(phase_dirs).most_common(1)[0][0] != phase_dir) and (s.dim4 == 1 or s.dim4 == 2) else False
+                reverse_phase = True \
+                        if (collections.Counter(phase_dirs).most_common(1)[0][0] != phase_dir) \
+                        and (s.dim4 == 1 or s.dim4 == 2) \
+                        else False
                 if whole_brain:
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
-                    print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 elif reverse_phase:
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-reversephase_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-reversephase_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
-                    print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
                 # Map task events
                 elif '_c09_' in description:
                     task_event = 'entrainQ2'
@@ -93,10 +94,27 @@ class bold:
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
+                # Pilot conditions
+                elif '_c101_' in description:
+                    task_event = 'AttendInF1Q1'
+                    if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
+                    if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
+                    print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
+                elif '_c105_' in description:
+                    task_event = 'AttendInF2Q1'
+                    if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
+                    if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
+                    print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
+                elif '_c113_' in description:
+                    task_event = 'AttendAwayQ1'
+                    if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
+                    if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
+                    print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
+                # Non-converted series-ids
                 else:
                     print(f'WARNING: [{description}] SERIES-ID ({dicom_dir_number}) WAS NOT SAVED.')
                     continue
-
+                
                 try:
                     info[template].append({'item': s.series_id})
                 except:
