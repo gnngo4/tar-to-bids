@@ -43,7 +43,10 @@ class bold:
                         and (s.dim4 == 1 or s.dim4 == 2) \
                         else False
                 if whole_brain:
-                    if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
+                    if suffix == 'sbref' and s.series_files == 1:
+                        template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
+                    if suffix == 'sbref' and s.series_files != 1:
+                        template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                 elif reverse_phase:
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-reversephase_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
