@@ -75,17 +75,17 @@ class bold:
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
 
                 # Osc
-                elif '__101__' in description:
+                elif '_c101_' in description:
                     task_event = 'AttendInF1Q1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
-                elif '__105__' in description:
+                elif '_c105_' in description:
                     task_event = 'AttendInF2Q1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
-                elif '__113__' in description:
+                elif '_c113_' in description:
                     task_event = 'AttendAwayQ1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
