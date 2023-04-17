@@ -60,32 +60,32 @@ class bold:
                         template = create_key(f'sub-{{subject}}/{{session}}/fmap/sub-{{subject}}_{{session}}_acq-mb{mb_factor}_dir-{phase_dir}_desc-GEbold_run-{{item:02d}}_epi')
                 
                 # Map task events
-                elif '_c09_' in description:
+                elif '_c12_' in description:
                     task_event = 'entrainQ2'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
-                elif '_c12_' in description:
+                elif '_c09_' in description:
                     task_event = 'entrainQ1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
-                elif '_c17_' in description:
+                elif '_c20_' in description:
                     task_event = 'controlQ2'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
-                elif '_c20_' in description:
+                elif '_c17_' in description:
                     task_event = 'controlQ1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
-                elif '_c13_' in description:
+                elif '_c16_' in description:
                     task_event = 'localizerQ2'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
                     print(f'MAPPING: [{description}] SERIES-ID ({dicom_dir_number}) -> template')
-                elif '_c16_' in description:
+                elif '_c13_' in description:
                     task_event = 'localizerQ1'
                     if suffix == 'sbref': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}')
                     if suffix == 'bold': template = create_key(f'sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}')
