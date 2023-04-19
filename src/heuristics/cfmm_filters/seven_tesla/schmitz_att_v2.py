@@ -43,7 +43,8 @@ class bold:
 
                 reverse_phase = (
                     True
-                    if "rev" in s.series_description.lower()
+                    if "fwd_2.5iso" in s.series_description.lower()
+                    or "rev_2.5iso" in s.series_description.lower()
                     else False
                 )
 

@@ -2,7 +2,11 @@ import argparse
 
 from src.heuristics.utils import HEURISTIC_DIR
 
-from src.parser.action import CheckTarMappings, CheckAvailableHeuristics
+from src.parser.action import (
+    CheckTarMappings,
+    CheckAvailableHeuristics,
+)
+
 
 def setup_parser():
     """
@@ -12,65 +16,68 @@ def setup_parser():
 
     # Basic arguments
     parser.add_argument(
-        '--tar',
+        "--tar",
         required=True,
-        help='Input dicom tar file. This can be obtained using cfmm2tar'
+        help=(
+            "Input dicom tar file. This can be obtained using"
+            " cfmm2tar"
+        ),
     )
 
     parser.add_argument(
-        '--subject',
-        required=True,
-        type=str,
-        help='Input subject id.'
+        "--subject", required=True, type=str, help="Input subject id."
     )
 
     parser.add_argument(
-        '--session',
-        required=True,
-        type=str,
-        help='Input session id.'
+        "--session", required=True, type=str, help="Input session id."
     )
 
     parser.add_argument(
-        '--heuristic',
+        "--heuristic",
         required=True,
         type=str,
-        help=f'Input the heuristics used to map the DICOM files, relative to {HEURISTIC_DIR}'
+        help=(
+            "Input the heuristics used to map the DICOM files,"
+            f" relative to {HEURISTIC_DIR}"
+        ),
     )
 
     parser.add_argument(
-        '--check_tar_mappings',
+        "--check_tar_mappings",
         default=None,
         type=str,
-        help=f'Input tar file and retrieve subject/session/task_csv mappings',
-        action=CheckTarMappings
+        help=(
+            "Input tar file and retrieve subject/session/task_csv"
+            " mappings"
+        ),
+        action=CheckTarMappings,
     )
 
     parser.add_argument(
-        '--task_mappings',
+        "--task_mappings",
         default=None,
         type=str,
-        help=f'Input task_tsv mappings (relative path)'
+        help="Input task_tsv mappings (relative path)",
     )
 
     parser.add_argument(
-        '--post_process',
-        action='store_true',
-        help='Enable post-heudiconv processing.'
+        "--post_process",
+        action="store_true",
+        help="Enable post-heudiconv processing.",
     )
 
     parser.add_argument(
-        '--check_available_heuristics',
+        "--check_available_heuristics",
         nargs=0,
-        help='Set option to see all available heuristics',
-        action=CheckAvailableHeuristics
+        help="Set option to see all available heuristics",
+        action=CheckAvailableHeuristics,
     )
 
     parser.add_argument(
-        '--output_dir',
-        default='./bids',
+        "--output_dir",
+        default="./bids",
         type=str,
-        help=f'Input the output directory (default: ./bids)'
+        help="Input the output directory (default: ./bids)",
     )
 
     return parser

@@ -1,7 +1,8 @@
-'''
+"""
 Template heudiconv file from
 https://neuroimaging-core-docs.readthedocs.io/en/latest/pages/heudiconv.html
-'''
+"""
+
 
 def infotodict(seqinfo):
     """Heuristic evaluator for determining which runs belong where
@@ -14,10 +15,18 @@ def infotodict(seqinfo):
     subindex: sub index within group
     """
 
-    from src.heuristics.cfmm_filters.seven_tesla.mp2rage import mp2rage
-    from src.heuristics.cfmm_filters.seven_tesla.sa2rage import sa2rage
-    from src.heuristics.cfmm_filters.seven_tesla.gre_field_map import gre_field_map
-    from src.heuristics.cfmm_filters.seven_tesla.schmitz_att_v1 import bold
+    from src.heuristics.cfmm_filters.seven_tesla.mp2rage import (
+        mp2rage,
+    )
+    from src.heuristics.cfmm_filters.seven_tesla.sa2rage import (
+        sa2rage,
+    )
+    from src.heuristics.cfmm_filters.seven_tesla.gre_field_map import (
+        gre_field_map,
+    )
+    from src.heuristics.cfmm_filters.seven_tesla.schmitz_att_v2 import (
+        bold,
+    )
 
     # Instantiate all cfmm_filters
     infos = [

@@ -15,14 +15,24 @@ def infotodict(seqinfo):
     subindex: sub index within group
     """
 
-    from src.heuristics.cfmm_filters.bruker.epi_field_map import (
-        epi_field_map,
+    from src.heuristics.cfmm_filters.seven_tesla.mp2rage import (
+        mp2rage,
     )
-    from src.heuristics.cfmm_filters.bruker.osc_v1 import bold
+    from src.heuristics.cfmm_filters.seven_tesla.sa2rage import (
+        sa2rage,
+    )
+    from src.heuristics.cfmm_filters.seven_tesla.gre_field_map import (
+        gre_field_map,
+    )
+    from src.heuristics.cfmm_filters.seven_tesla.schmitz_att_v1 import (
+        bold,
+    )
 
     # Instantiate all cfmm_filters
     infos = [
-        epi_field_map(seqinfo).get_info(),
+        mp2rage(seqinfo).get_info(),
+        sa2rage(seqinfo).get_info(),
+        gre_field_map(seqinfo).get_info(),
         bold(seqinfo).get_info(),
     ]
 
