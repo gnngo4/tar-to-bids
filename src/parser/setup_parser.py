@@ -18,19 +18,12 @@ def setup_parser():
     parser.add_argument(
         "--tar",
         required=True,
-        help=(
-            "Input dicom tar file. This can be obtained using"
-            " cfmm2tar"
-        ),
+        help=("Input dicom tar file. This can be obtained using" " cfmm2tar"),
     )
 
-    parser.add_argument(
-        "--subject", required=True, type=str, help="Input subject id."
-    )
+    parser.add_argument("--subject", required=True, type=str, help="Input subject id.")
 
-    parser.add_argument(
-        "--session", required=True, type=str, help="Input session id."
-    )
+    parser.add_argument("--session", required=True, type=str, help="Input session id.")
 
     parser.add_argument(
         "--heuristic",
@@ -46,10 +39,7 @@ def setup_parser():
         "--check_tar_mappings",
         default=None,
         type=str,
-        help=(
-            "Input tar file and retrieve subject/session/task_csv"
-            " mappings"
-        ),
+        help=("Input tar file and retrieve subject/session/task_csv" " mappings"),
         action=CheckTarMappings,
     )
 

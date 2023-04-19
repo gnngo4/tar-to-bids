@@ -41,8 +41,7 @@ class cfmm_tar:
         from pydicom import dcmread
 
         assert self.tar_tree is not None, (
-            "Initialize self.tar_tree with the reformat_dicom_tree()"
-            " method."
+            "Initialize self.tar_tree with the reformat_dicom_tree()" " method."
         )
         series_ids = os.listdir(self.tar_tree)
         series_ids.sort()  # reorder in ascending order
@@ -59,9 +58,7 @@ class cfmm_tar:
             '_PhysioLog'
             """
             if "_PhysioLog" in series_description:
-                track_scans.append(
-                    series_description.replace("_PhysioLog", "")
-                )
+                track_scans.append(series_description.replace("_PhysioLog", ""))
 
         physio_idx, physio_pairs = 0, {}
         physio_pair = {"PHYSIO": None, "MRI": None}
@@ -77,10 +74,7 @@ class cfmm_tar:
             if track_scans[physio_idx] == series_description:
                 physio_pair["MRI"] = str(series_number).zfill(4)
 
-            if (
-                physio_pair["PHYSIO"] is not None
-                and physio_pair["MRI"] is not None
-            ):
+            if physio_pair["PHYSIO"] is not None and physio_pair["MRI"] is not None:
                 physio_pairs[physio_pair["PHYSIO"]] = physio_pair[
                     "MRI"
                 ]  # Add physio match
@@ -95,16 +89,12 @@ class cfmm_tar:
 
         return physio_pairs
 
-    def pair_physio_to_mri(
-        self, physio_pairs, subject_id, session_id, bids_dir
-    ):
+    def pair_physio_to_mri(self, physio_pairs, subject_id, session_id, bids_dir):
         """
         Loop through `physio_pairs` and copy physio dicoms to a physio_dir (`physio_dir`)
         """
 
-        physio_dir = (
-            f"{bids_dir}/sub-{subject_id}/ses-{session_id}/physio"
-        )
+        physio_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/physio"
         if not os.path.isdir(physio_dir):
             os.mkdir(physio_dir)
 
@@ -113,12 +103,8 @@ class cfmm_tar:
             assert (
                 len(os.listdir(dcm_physio_dir)) == 1
             ), "Physio dicom folder should contain only 1 file."
-            physio_dcm = (
-                f"{dcm_physio_dir}/{os.listdir(dcm_physio_dir)[0]}"
-            )
-            copy_physio_cmd = (
-                f"cp {physio_dcm} {physio_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
-            )
+            physio_dcm = f"{dcm_physio_dir}/{os.listdir(dcm_physio_dir)[0]}"
+            copy_physio_cmd = f"cp {physio_dcm} {physio_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
             os.system(copy_physio_cmd)
 
     def _get_dicom_tree(self):
@@ -135,15 +121,9 @@ class cfmm_tar:
             ]
         )
         print(f"UNTAR: {self.tar_tree}")
-        assert os.path.isdir(
-            self.tar_tree
-        ), f"{self.tar_tree} does not exist."
+        assert os.path.isdir(self.tar_tree), f"{self.tar_tree} does not exist."
 
     def _update_dicom_tree(self, dir_name):
-        self.tar_tree = self.tar_tree.replace(
-            self.session_info, dir_name
-        )
+        self.tar_tree = self.tar_tree.replace(self.session_info, dir_name)
         print(f"UPDATE: {self.tar_tree}")
-        assert os.path.isdir(
-            self.tar_tree
-        ), f"{self.tar_tree} does not exist."
+        assert os.path.isdir(self.tar_tree), f"{self.tar_tree} does not exist."

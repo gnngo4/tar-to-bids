@@ -22,11 +22,7 @@ class bold:
         for s in self.seqinfo:
             description = s.series_description.lower()
             if "mbep2d_bold" in description:
-                phase_dir = (
-                    description.split("_p")[1]
-                    .split("_")[1][:2]
-                    .upper()
-                )
+                phase_dir = description.split("_p")[1].split("_")[1][:2].upper()
                 phase_dirs.append(phase_dir)
 
         # Map image key(s) to dicom series_id(s)
@@ -35,14 +31,8 @@ class bold:
             if "mbep2d_bold" in description:
                 # Scrape info from Series_description of dicom.tsv
                 mb_factor = description.split("_mb")[1].split("_")[0]
-                in_phase_accel = description.split("_p")[1].split(
-                    "_"
-                )[0]
-                phase_dir = (
-                    description.split("_p")[1]
-                    .split("_")[1][:2]
-                    .upper()
-                )
+                in_phase_accel = description.split("_p")[1].split("_")[0]
+                phase_dir = description.split("_p")[1].split("_")[1][:2].upper()
                 dicom_dir_number = str(s.dcm_dir_name)
                 part = part_mappings[s.image_type[2]]
                 suffix = (
@@ -52,17 +42,13 @@ class bold:
                 )
 
                 whole_brain = (
-                    True
-                    if "wholebrain" in s.series_description.lower()
-                    else False
+                    True if "wholebrain" in s.series_description.lower() else False
                 )
 
                 reverse_phase = (
                     True
                     if (
-                        collections.Counter(phase_dirs).most_common(
-                            1
-                        )[0][0]
+                        collections.Counter(phase_dirs).most_common(1)[0][0]
                         != phase_dir
                     )
                     and (s.dim4 == 1)

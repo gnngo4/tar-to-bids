@@ -8,21 +8,17 @@ class task_mapper:
         self.MAPPING_DIR = "/mappings"
         if "/" in rel_task_csv:
             rel_task_csv = rel_task_csv.split("/")[-1]
-        self.task_csv = f"{self.MAPPING_DIR}/{heuristic}/series_task_mappings/{rel_task_csv}"
-        assert os.path.exists(
-            self.task_csv
-        ), f"{self.task_csv} does not exist."
+        self.task_csv = (
+            f"{self.MAPPING_DIR}/{heuristic}/series_task_mappings/{rel_task_csv}"
+        )
+        assert os.path.exists(self.task_csv), f"{self.task_csv} does not exist."
 
     def get_series_to_task_mappings(self):
         df = pd.read_csv(self.task_csv)
         assert [
             i for i in df.columns[:2]
-        ] == self.TASK_COLUMNS, (
-            f"csv columns should include: {self.TASK_COLUMNS}"
-        )
-        series_id = [
-            str(i).zfill(4) for i in df["series_id"].to_list()
-        ]
+        ] == self.TASK_COLUMNS, f"csv columns should include: {self.TASK_COLUMNS}"
+        series_id = [str(i).zfill(4) for i in df["series_id"].to_list()]
         task_event = df["task_event"].to_list()
 
         return dict(zip(series_id, task_event))
@@ -60,9 +56,7 @@ class tar_mapper:
         df = pd.read_csv(self.tar_csv)
         assert [
             i for i in df.columns
-        ] == self.TAR_COLUMNS, (
-            f"csv columns should only include: {self.TAR_COLUMNS}"
-        )
+        ] == self.TAR_COLUMNS, f"csv columns should only include: {self.TAR_COLUMNS}"
         # Check if all relevant columns are filled out
         log_dict = self._check_tar_file(df, tar_file)
         # print information
@@ -73,12 +67,8 @@ class tar_mapper:
         assert os.path.isdir(
             self.MAPPING_DIR
         ), f"{self.MAPPING_DIR} directory does not exist."
-        tar_mappings_csv = os.path.join(
-            self.MAPPING_DIR, "tar_mappings.csv"
-        )
-        assert os.path.exists(
-            tar_mappings_csv
-        ), f"{tar_mappings_csv} does not exist."
+        tar_mappings_csv = os.path.join(self.MAPPING_DIR, "tar_mappings.csv")
+        assert os.path.exists(tar_mappings_csv), f"{tar_mappings_csv} does not exist."
 
         return tar_mappings_csv
 
@@ -88,15 +78,12 @@ class tar_mapper:
 
         # Check if `tar_file` exists in the csv
         assert tar_row.shape[0] == 1, (
-            f"{tar_file} does not exist in the csv, or there are more"
-            " than 1."
+            f"{tar_file} does not exist in the csv, or there are more" " than 1."
         )
         # Check to make sure the MANDATORY_TAR_COLUMNS are filled out
         log_dict = {}
         for _col in self.MANDATORY_TAR_COLUMNS:
-            assert not check_null[_col].values[
-                0
-            ], f"{tar_file}: {_col} is empty."
+            assert not check_null[_col].values[0], f"{tar_file}: {_col} is empty."
             log_dict[_col] = tar_row[_col].values[0]
         # Check if task_csv mapping exists
         task_csv = f"{self.MAPPING_DIR}/{log_dict['study_id']}/series_task_mappings/{log_dict['task_csv']}"

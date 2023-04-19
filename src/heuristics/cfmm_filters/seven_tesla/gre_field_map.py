@@ -31,8 +31,6 @@ class gre_field_map:
                     info[magnitude].append({"item": s.series_id})
 
                 if "P" in s.image_type:
-                    info[phase_difference].append(
-                        {"item": s.series_id}
-                    )
+                    info[phase_difference].append({"item": s.series_id})
 
         return info

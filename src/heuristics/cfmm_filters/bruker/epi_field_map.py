@@ -19,10 +19,7 @@ class epi_field_map:
                 template = create_key(
                     "sub-{subject}/{session}/fmap/sub-{subject}_{session}_dir-AP_desc-WholeBrainGE40Average_run-{item:02d}_epi"
                 )
-            elif (
-                description
-                == "pciuserEPI_rsfMRI_Mice_RV_40avg".lower()
-            ):
+            elif description == "pciuserEPI_rsfMRI_Mice_RV_40avg".lower():
                 template = create_key(
                     "sub-{subject}/{session}/fmap/sub-{subject}_{session}_dir-PA_desc-WholeBrainGE40Average_run-{item:02d}_epi"
                 )

@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+import json
 
 
 def pair_physio_to_mri(
@@ -9,9 +11,7 @@ def pair_physio_to_mri(
     """
 
     physio_pairs = _get_physio_pairs(tar_tree)
-    _pair_physio_to_mri(
-        tar_tree, physio_pairs, subject_id, session_id, bids_dir
-    )
+    _pair_physio_to_mri(tar_tree, physio_pairs, subject_id, session_id, bids_dir)
 
 
 def _get_physio_pairs(tar_tree: str):
@@ -43,9 +43,7 @@ def _get_physio_pairs(tar_tree: str):
         '_PhysioLog'
         """
         if "_PhysioLog" in series_description:
-            track_scans.append(
-                series_description.replace("_PhysioLog", "")
-            )
+            track_scans.append(series_description.replace("_PhysioLog", ""))
 
     physio_idx, physio_pairs = 0, {}
     physio_pair = {"PHYSIO": None, "MRI": None}
@@ -61,13 +59,8 @@ def _get_physio_pairs(tar_tree: str):
         if track_scans[physio_idx] == series_description:
             physio_pair["MRI"] = str(series_number).zfill(4)
 
-        if (
-            physio_pair["PHYSIO"] is not None
-            and physio_pair["MRI"] is not None
-        ):
-            physio_pairs[physio_pair["PHYSIO"]] = physio_pair[
-                "MRI"
-            ]  # Add physio match
+        if physio_pair["PHYSIO"] is not None and physio_pair["MRI"] is not None:
+            physio_pairs[physio_pair["PHYSIO"]] = physio_pair["MRI"]  # Add physio match
             physio_pair = {
                 "PHYSIO": None,
                 "MRI": None,
@@ -91,9 +84,7 @@ def _pair_physio_to_mri(
     Loop through `physio_pairs` and copy physio dicoms to a physio_dir (`physio_dir`)
     """
 
-    physio_dir = (
-        f"{bids_dir}/sub-{subject_id}/ses-{session_id}/physio"
-    )
+    physio_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/physio"
     if not os.path.isdir(physio_dir):
         os.mkdir(physio_dir)
 
@@ -102,10 +93,22 @@ def _pair_physio_to_mri(
         assert (
             len(os.listdir(dcm_physio_dir)) == 1
         ), "Physio dicom folder should contain only 1 file."
-        physio_dcm = (
-            f"{dcm_physio_dir}/{os.listdir(dcm_physio_dir)[0]}"
-        )
-        copy_physio_cmd = (
-            f"cp {physio_dcm} {physio_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
-        )
+        physio_dcm = f"{dcm_physio_dir}/{os.listdir(dcm_physio_dir)[0]}"
+        copy_physio_cmd = f"cp {physio_dcm} {physio_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
+
+        # Relabel output physio file
+        func_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/func"
+        jsons = [
+            Path(f"{func_dir}/{j}")
+            for j in os.listdir(func_dir)
+            if Path(j).suffix == ".json"
+        ]
+        for j in jsons:
+            with open(j, "r") as json_file:
+                json_dict = json.load(json_file)
+                if str(json_dict["SeriesNumber"]).zfill(4) == mri_id:
+                    current_stem = f"sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
+                    new_stem = f"{j.stem.split('_part-')[0]}_bold_dcm"
+                    copy_physio_cmd = copy_physio_cmd.replace(current_stem, new_stem)
+
         os.system(copy_physio_cmd)

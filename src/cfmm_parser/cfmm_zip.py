@@ -20,9 +20,7 @@ class cfmm_zip:
         path = pathlib.Path(self.zip_dir)
         common_path = str(
             pathlib.Path(
-                os.path.commonprefix(
-                    [i for i in path.glob("**/*.dcm")]
-                )
+                os.path.commonprefix([i for i in path.glob("**/*.dcm")])
             ).parent
         )
         dst = common_path.replace(common_path.split("/")[5], dir_name)

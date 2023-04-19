@@ -26,9 +26,7 @@ class bold:
                 phase_dir = description.split("_mb")[1][2:4].upper()
                 if phase_dir == "P2":
                     mb_factor = "4p2"
-                    phase_dir = description.split("_p2")[1][
-                        1:3
-                    ].upper()
+                    phase_dir = description.split("_p2")[1][1:3].upper()
                 phase_dirs.append(phase_dir)
                 dicom_dir_number = str(s.dcm_dir_name)
                 part = part_mappings[s.image_type[2]]
@@ -39,17 +37,13 @@ class bold:
                 )
 
                 whole_brain = (
-                    True
-                    if "wholebrain" in s.series_description.lower()
-                    else False
+                    True if "wholebrain" in s.series_description.lower() else False
                 )
 
                 reverse_phase = (
                     True
                     if (
-                        collections.Counter(phase_dirs).most_common(
-                            1
-                        )[0][0]
+                        collections.Counter(phase_dirs).most_common(1)[0][0]
                         != phase_dir
                     )
                     and (s.dim4 == 1 or s.dim4 == 2)

@@ -21,9 +21,7 @@ def call_heudiconv(tar_dir, out_dir, heuristic_py, subject, session):
     subprocess.run(cmd, shell=True)
 
 
-def call_heudiconv_zip(
-    tar_dir, out_dir, heuristic_py, subject, session
-):
+def call_heudiconv_zip(tar_dir, out_dir, heuristic_py, subject, session):
     import subprocess
 
     cmd = (
@@ -55,30 +53,22 @@ def main():
         output_dir.mkdir(parents=True)
 
     # Check if session is already run
-    subject_session_dir = (
-        f"{args.output_dir}/sub-{args.subject}/ses-{args.session}"
-    )
+    subject_session_dir = f"{args.output_dir}/sub-{args.subject}/ses-{args.session}"
     assert not os.path.isdir(subject_session_dir), (
         f"Remove (1) {subject_session_dir} to re-run, and (2)"
         f" {args.output_dir}/.heudiconv/{args.subject}/ses-{args.session}."
     )
 
     # Check for post-processing module associated to the specified heuristic.
-    run_post_processing = (
-        args.task_mappings is not None or args.post_process
-    )
+    run_post_processing = args.task_mappings is not None or args.post_process
     if run_post_processing:
-        post_process_module = (
-            f"src.heuristics_post.{args.heuristic.replace('.py','')}"
-        )
+        post_process_module = f"src.heuristics_post.{args.heuristic.replace('.py','')}"
         try:
             from importlib import import_module
 
             post_process = import_module(f"{post_process_module}")
         except:
-            print(
-                f"{post_process_module} does not exist.\nExiting.\n"
-            )
+            print(f"{post_process_module} does not exist.\nExiting.\n")
             sys.exit(0)
 
     # Extract tar file
@@ -97,9 +87,7 @@ def main():
         tar_obj.reformat_dicom_tree(reformat)
         # heudiconv
         heuristic = os.path.join(HEURISTIC_DIR, args.heuristic)
-        assert Path(
-            heuristic
-        ).exists(), f"{heuristic} does not exist."
+        assert Path(heuristic).exists(), f"{heuristic} does not exist."
         call_heudiconv(
             tar_obj.tar_dir,
             args.output_dir,
@@ -137,9 +125,7 @@ def main():
         zip_obj.reformat_dicom_tree(reformat)
         # heudiconv
         heuristic = os.path.join(HEURISTIC_DIR, args.heuristic)
-        assert Path(
-            heuristic
-        ).exists(), f"{heuristic} does not exist."
+        assert Path(heuristic).exists(), f"{heuristic} does not exist."
         call_heudiconv_zip(
             zip_obj.zip_dir,
             args.output_dir,

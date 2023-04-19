@@ -22,9 +22,7 @@ def annotate_func(subject: str, session: str, bids_dir: str) -> None:
     return func_runs, func_ls, physio_ls
 
 
-def log_and_clean_unmapped_func(
-    func_ls, physio_ls, subject_id, session_id, bids_dir
-):
+def log_and_clean_unmapped_func(func_ls, physio_ls, subject_id, session_id, bids_dir):
     import shutil
 
     print("\nThe following files were not converted:")
@@ -33,9 +31,7 @@ def log_and_clean_unmapped_func(
         os.remove(i)
     for i in physio_ls:
         print(f"PHYSIO   : {i}")
-    physio_dir = (
-        f"{bids_dir}/sub-{subject_id}/ses-{session_id}/physio"
-    )
+    physio_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/physio"
     shutil.rmtree(physio_dir)
 
 
@@ -62,9 +58,7 @@ def remap_func(func_runs, task_mappings):
                 # quick-fix for relabeling of physio[.dcm]
                 if _type == "physio":
                     physio_idx = relabel_f.index("physio-")
-                    physio_id = relabel_f[
-                        physio_idx : physio_idx + 12
-                    ]
+                    physio_id = relabel_f[physio_idx : physio_idx + 12]
                     suffix = (
                         f["mag_bold"]
                         .split("_acq")[1]
@@ -96,13 +90,9 @@ def heudiconv_post_process(
     task_mappings = task_mapper(
         heuristic.replace(".py", ""), task_mapping
     ).get_series_to_task_mappings()
-    func_runs, func_ls, physio_ls = annotate_func(
-        subject_id, session_id, bids_dir
-    )
+    func_runs, func_ls, physio_ls = annotate_func(subject_id, session_id, bids_dir)
     remap_func(func_runs, task_mappings)
-    log_and_clean_unmapped_func(
-        func_ls, physio_ls, subject_id, session_id, bids_dir
-    )
+    log_and_clean_unmapped_func(func_ls, physio_ls, subject_id, session_id, bids_dir)
 
 
 def _aggregate_bold(func_ls):
@@ -139,11 +129,7 @@ def _aggregate_sbref(func_ls, func_runs):
         suffix = "sbref.json"
         if suffix == f[-len(suffix) :]:
             for series_id, j in func_runs.items():
-                base = (
-                    j.get("mag_bold")
-                    .split("acq-")[1]
-                    .split("_part-")[0]
-                )
+                base = j.get("mag_bold").split("acq-")[1].split("_part-")[0]
                 base_f = f.split("acq-")[1].split("_part-")[0]
                 if base_f != base:
                     continue
@@ -155,11 +141,7 @@ def _aggregate_sbref(func_ls, func_runs):
         suffix = "sbref.nii.gz"
         if suffix == f[-len(suffix) :]:
             for series_id, j in func_runs.items():
-                base = (
-                    j.get("mag_bold")
-                    .split("acq-")[1]
-                    .split("_part-")[0]
-                )
+                base = j.get("mag_bold").split("acq-")[1].split("_part-")[0]
                 base_f = f.split("acq-")[1].split("_part-")[0]
                 if base_f != base:
                     continue
@@ -185,15 +167,9 @@ def _aggregate_physio(physio_ls, func_runs):
     return physio_ls, func_runs
 
 
-def _bids_listdir(
-    dir_type: str, subject_id: str, session_id: str, bids_dir: str
-):
-    base_dir = (
-        f"{bids_dir}/sub-{subject_id}/ses-{session_id}/{dir_type}"
-    )
-    assert os.path.isdir(
-        base_dir
-    ), f"Directory: [{base_dir}] does not exist."
+def _bids_listdir(dir_type: str, subject_id: str, session_id: str, bids_dir: str):
+    base_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/{dir_type}"
+    assert os.path.isdir(base_dir), f"Directory: [{base_dir}] does not exist."
 
     filtered_list = []
     for i in os.listdir(base_dir):

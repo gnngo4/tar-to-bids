@@ -33,16 +33,10 @@ class sa2rage:
                 if "UNI_Images" in s.series_description:
                     info[b1map].append({"item": s.series_id})
 
-                if (
-                    "INV1" in s.series_description
-                    and s.image_type[2] == "M"
-                ):
+                if "INV1" in s.series_description and s.image_type[2] == "M":
                     info[inv1].append({"item": s.series_id})
 
-                if (
-                    "INV2" in s.series_description
-                    and s.image_type[2] == "M"
-                ):
+                if "INV2" in s.series_description and s.image_type[2] == "M":
                     info[inv2].append({"item": s.series_id})
 
         return info
