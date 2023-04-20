@@ -1,6 +1,4 @@
 import os
-from pathlib import Path
-import json
 
 
 def pair_physio_to_mri(
@@ -18,7 +16,6 @@ def _get_physio_pairs(tar_tree: str):
     """
     Naive method to pair physio dcm with corresponding MRI data
     Sequentially matches '_PhysioLog' to MRI data
-
     Returns a dictionary mapping Physio_log series number to its
     associated MRI series number
     """
@@ -95,24 +92,4 @@ def _pair_physio_to_mri(
         ), "Physio dicom folder should contain only 1 file."
         physio_dcm = f"{dcm_physio_dir}/{os.listdir(dcm_physio_dir)[0]}"
         copy_physio_cmd = f"cp {physio_dcm} {physio_dir}/sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
-
-        # Relabel output physio file
-        func_dir = f"{bids_dir}/sub-{subject_id}/ses-{session_id}/func"
-        jsons = [
-            Path(f"{func_dir}/{j}")
-            for j in os.listdir(func_dir)
-            if Path(j).suffix == ".json"
-        ]
-        for j in jsons:
-            with open(j, "r") as json_file:
-                json_dict = json.load(json_file)
-                if str(json_dict["SeriesNumber"]).zfill(4) == mri_id:
-                    current_stem = f"sub-{subject_id}_ses-{session_id}_task-{mri_id}_physio-{physio_id}_PHYSIOLOG.dcm"
-                    new_stem = (
-                        f"{j.stem.split('_part-')[0]}_part-mag_desc-physio_bold.dcm"
-                    )
-                    copy_physio_cmd = copy_physio_cmd.replace(current_stem, new_stem)
-                    copy_physio_cmd = copy_physio_cmd.replace("/physio/", "/func/")
-                    os.system(copy_physio_cmd)
-
-    Path(physio_dir).rmdir()
+        os.system(copy_physio_cmd)

@@ -1,6 +1,6 @@
 import os
 
-from src.heuristics_post.physio_base import pair_physio_to_mri
+from src.heuristics_post.physio_base_old import pair_physio_to_mri
 from src.csv_reader.tar_mapper import task_mapper
 
 
@@ -68,6 +68,7 @@ def remap_func(func_runs, task_mappings):
                             f"run-{str(event_runs[task_event]).zfill(2)}",
                         )
                     )
+                    suffix = suffix.replace("part-mag", "part-mag_desc-physio")
                     relabel_f = (
                         relabel_f.replace("/physio/", "/func/")
                         .replace(physio_id, "")
