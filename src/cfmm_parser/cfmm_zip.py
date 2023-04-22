@@ -1,4 +1,5 @@
 import os
+import shutil
 import zipfile
 import shutil
 import tempfile
@@ -24,7 +25,7 @@ class cfmm_zip:
             ).parent
         )
         dst = common_path.replace(common_path.split("/")[5], dir_name)
-        os.rename(common_path, dst)
+        shutil.move(common_path, dst)
         print(f"RELABEL: {dst}")
         assert os.path.isdir(dst), f"{dst} does not exist."
 
