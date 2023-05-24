@@ -109,8 +109,25 @@ class cfmm_tar:
 
     def _get_dicom_tree(self):
         splits = self.tar_file.split("/")[-1].split("_")
+
+        if os.path.isdir(self._build_siemens_tree(splits)):
+            self.tar_tree = self._build_siemens_tree(splits)
+        elif os.path.isdir(self._build_bruker_tree(splits)):
+            self.tar_tree = self._build_bruker_tree(splits)
+        else:
+            raise RuntimeError("`self.tar_tree` could not be heuristically defined.")
+
+        assert os.path.isdir(self.tar_tree), f"{self.tar_tree} does not exist."
+        print(f"UNTAR: {self.tar_tree}")
+
+    def _update_dicom_tree(self, dir_name):
+        self.tar_tree = self.tar_tree.replace(self.session_info, dir_name)
+        print(f"UPDATE: {self.tar_tree}")
+        assert os.path.isdir(self.tar_tree), f"{self.tar_tree} does not exist."
+
+    def _build_siemens_tree(self, splits):
         self.session_info = "_".join(splits[3:-1])
-        self.tar_tree = "/".join(
+        tar_tree = "/".join(
             [
                 self.tar_dir,
                 splits[0],
@@ -120,10 +137,18 @@ class cfmm_tar:
                 splits[-1].replace(".tar", ""),
             ]
         )
-        print(f"UNTAR: {self.tar_tree}")
-        assert os.path.isdir(self.tar_tree), f"{self.tar_tree} does not exist."
+        return tar_tree
 
-    def _update_dicom_tree(self, dir_name):
-        self.tar_tree = self.tar_tree.replace(self.session_info, dir_name)
-        print(f"UPDATE: {self.tar_tree}")
-        assert os.path.isdir(self.tar_tree), f"{self.tar_tree} does not exist."
+    def _build_bruker_tree(self, splits):
+        self.session_info = "_".join(splits[3:-2])
+        tar_tree = "/".join(
+            [
+                self.tar_dir,
+                splits[0],
+                splits[1],
+                splits[2],
+                self.session_info,
+                "_".join(splits[-2:]).replace(".tar", ""),
+            ]
+        )
+        return tar_tree
