@@ -177,10 +177,40 @@ class bold:
                         f" ({dicom_dir_number}) -> template"
                     )
 
+                elif "_c000_" in description:
+                    task_event = "slpilot"
+                    if suffix == "sbref":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-RL_run-{{item:02d}}_{suffix}"
+                        )
+                    if suffix == "bold":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-RL_run-{{item:02d}}_part-{part}_{suffix}"
+                        )
+                    print(
+                        f"MAPPING: [{description}] SERIES-ID"
+                        f" ({dicom_dir_number}) -> template"
+                    )
+
+                elif "_c500" in description:
+                    task_event = "wbpilot"
+                    if suffix == "sbref":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-AP_run-{{item:02d}}_{suffix}"
+                        )
+                    if suffix == "bold":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-AP_run-{{item:02d}}_part-{part}_{suffix}"
+                        )
+                    print(
+                        f"MAPPING: [{description}] SERIES-ID"
+                        f" ({dicom_dir_number}) -> template"
+                    )
+
                 # Non-converted series-ids
                 else:
                     print(
-                        f"WARNING: [{description}] SERIES-ID"
+                        f"WARNING: [{description} || suffix: {suffix}] SERIES-ID"
                         f" ({dicom_dir_number}) WAS NOT SAVED."
                     )
                     continue
