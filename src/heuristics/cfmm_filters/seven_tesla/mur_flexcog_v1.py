@@ -29,9 +29,13 @@ class bold:
                 fmap_flag = True if "_fmap" in description else False
 
                 if fmap_flag and wholebrain_flag:
-                    if suffix == "sbref":
+                    if suffix == "sbref" and s.series_files == 1:
                         template = create_key(
                             f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}"
+                        )
+                    if suffix == "sbref" and s.series_files == 2:
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-wholebrain_dir-{phase_dir}_run-{{item:02d}}_{suffix}"
                         )
                     if suffix == "bold":
                         template = create_key(
