@@ -20,19 +20,19 @@ class protocol:
                 and "_600" in description
             ):
                 template = create_key(
-                    "sub-{subject}/{session}/func/sub-{subject}_{session}_task-rest_dir-fwd_run-{item:02d}_bold"
+                    "sub-{subject}/{session}/func/sub-{subject}_{session}_task-rest_dir-AP_run-{item:02d}_bold"
                 )
             elif description.startswith(
                 "T2star_rsFMRI".lower()
             ) and description.endswith("SAT".lower()):
                 template = create_key(
-                    "sub-{subject}/{session}/fmap/sub-{subject}_{session}_dir-fwd_desc-GE_run-{item:02d}_epi"
+                    "sub-{subject}/{session}/fmap/sub-{subject}_{session}_dir-AP_desc-GE_run-{item:02d}_epi"
                 )
             elif description.startswith(
                 "T2star_rsFMRI".lower()
             ) and description.endswith("SAT_RV".lower()):
                 template = create_key(
-                    "sub-{subject}/{session}/fmap/sub-{subject}_{session}_dir-rev_desc-GE_run-{item:02d}_epi"
+                    "sub-{subject}/{session}/fmap/sub-{subject}_{session}_dir-PA_desc-GE_run-{item:02d}_epi"
                 )
             elif description.startswith("T2_".lower()):
                 template = create_key(
