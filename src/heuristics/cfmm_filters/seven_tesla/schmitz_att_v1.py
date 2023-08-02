@@ -18,15 +18,27 @@ class bold:
         # Map image key(s) to dicom series_id(s)
         for s in self.seqinfo:
             description = s.series_description.lower()
-            if "ep_bold_mb" in description:
+            part = part_mappings[s.image_type[2]]
+            dicom_dir_number = str(s.dcm_dir_name)
+
+            if "rslh_ep3d_vaso_800iso_rl_E00".lower() in description:
+                suffix = "vaso"
+                task_event = "wbpilot"
+                template = create_key(
+                    f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-AP_run-{{item:02d}}_part-{part}_{suffix}"
+                )
+                print(
+                    f"MAPPING: [{description}] SERIES-ID"
+                    f" ({dicom_dir_number}) -> template"
+                )
+
+            elif "ep_bold_mb" in description:
                 # Scrape info from Series_description of dicom.tsv
                 mb_factor = description.split("_mb")[1].split("_")[0]
                 phase_dir = description.split("_mb")[1][2:4].upper()
                 if phase_dir == "P2":
                     mb_factor = "4p2"
                     phase_dir = description.split("_p2")[1][1:3].upper()
-                dicom_dir_number = str(s.dcm_dir_name)
-                part = part_mappings[s.image_type[2]]
                 suffix = (
                     "sbref"
                     if "sbref".lower() in s.series_description.lower()
