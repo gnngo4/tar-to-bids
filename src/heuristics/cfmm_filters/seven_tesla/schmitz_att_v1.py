@@ -25,12 +25,17 @@ class bold:
                 suffix = "vaso"
                 task_event = "wbpilot"
                 template = create_key(
-                    f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-AP_run-{{item:02d}}_part-{part}_{suffix}"
+                    f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-RL_run-{{item:02d}}_part-{part}_{suffix}"
                 )
                 print(
                     f"MAPPING: [{description}] SERIES-ID"
                     f" ({dicom_dir_number}) -> template"
                 )
+
+                try:
+                    info[template].append({"item": s.series_id})
+                except:
+                    info[template] = [{"item": s.series_id}]
 
             elif "ep_bold_mb" in description:
                 # Scrape info from Series_description of dicom.tsv
