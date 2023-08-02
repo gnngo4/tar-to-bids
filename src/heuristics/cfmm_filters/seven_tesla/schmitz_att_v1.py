@@ -132,52 +132,8 @@ class bold:
                         f"MAPPING: [{description}] SERIES-ID"
                         f" ({dicom_dir_number}) -> template"
                     )
-                elif "_c13_" in description:
-                    task_event = "localizerQ1"
-                    if suffix == "sbref":
-                        template = create_key(
-                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}"
-                        )
-                    if suffix == "bold":
-                        template = create_key(
-                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}"
-                        )
-                    print(
-                        f"MAPPING: [{description}] SERIES-ID"
-                        f" ({dicom_dir_number}) -> template"
-                    )
 
-                # Frequency tagging Osc
-                elif "_c09_" in description:
-                    task_event = "entrainQ1"
-                    if suffix == "sbref":
-                        template = create_key(
-                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}"
-                        )
-                    if suffix == "bold":
-                        template = create_key(
-                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}"
-                        )
-                    print(
-                        f"MAPPING: [{description}] SERIES-ID"
-                        f" ({dicom_dir_number}) -> template"
-                    )
-                elif "_c17_" in description:
-                    task_event = "controlQ1"
-                    if suffix == "sbref":
-                        template = create_key(
-                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_{suffix}"
-                        )
-                    if suffix == "bold":
-                        template = create_key(
-                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_acq-mb{mb_factor}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}"
-                        )
-                    print(
-                        f"MAPPING: [{description}] SERIES-ID"
-                        f" ({dicom_dir_number}) -> template"
-                    )
-
-                # Attention Osc
+                # Osc
                 elif "_c101_" in description:
                     task_event = "AttendInF1Q1"
                     if suffix == "sbref":
