@@ -270,6 +270,48 @@ class bold:
                         f"MAPPING: [{description}] SERIES-ID"
                         f" ({dicom_dir_number}) -> template"
                     )
+                elif "_c09d_" in description:
+                    task_event = "entrainDQ1"
+                    if suffix == "sbref":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-{phase_dir}_run-{{item:02d}}_{suffix}"
+                        )
+                    if suffix == "bold":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}"
+                        )
+                    print(
+                        f"MAPPING: [{description}] SERIES-ID"
+                        f" ({dicom_dir_number}) -> template"
+                    )
+                elif "_c09e_" in description:
+                    task_event = "entrainEQ1"
+                    if suffix == "sbref":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-{phase_dir}_run-{{item:02d}}_{suffix}"
+                        )
+                    if suffix == "bold":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}"
+                        )
+                    print(
+                        f"MAPPING: [{description}] SERIES-ID"
+                        f" ({dicom_dir_number}) -> template"
+                    )
+                elif "_c09f_" in description:
+                    task_event = "entrainFQ1"
+                    if suffix == "sbref":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-{phase_dir}_run-{{item:02d}}_{suffix}"
+                        )
+                    if suffix == "bold":
+                        template = create_key(
+                            f"sub-{{subject}}/{{session}}/func/sub-{{subject}}_{{session}}_task-{task_event}_dir-{phase_dir}_run-{{item:02d}}_part-{part}_{suffix}"
+                        )
+                    print(
+                        f"MAPPING: [{description}] SERIES-ID"
+                        f" ({dicom_dir_number}) -> template"
+                    )
 
                 # Non-converted series-ids
                 else:
